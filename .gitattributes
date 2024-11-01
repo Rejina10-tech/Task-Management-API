@@ -5,3 +5,5 @@
 *.jpg binary
 *.png binary
 *.gif binary
+* text=auto
+

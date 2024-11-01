@@ -1,0 +1,76 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
+
+    <a class="navbar-brand main-heading"> 
+            
+      &nbsp; Task Management API
+    
+    </a>
+
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+
+    </button>
+
+
+      <div class="collapse navbar-collapse text-center" id="navbarNavDropdown">
+
+        
+        <ul class="navbar-nav ml-auto">
+
+
+          &nbsp;     &nbsp;     &nbsp; 
+
+
+          <li class="nav-item">
+      
+            <a class="btn btn-outline-primary navbar-btn" type="button" href="{% url 'dashboard' %}">Dasboard</a>
+
+          </li>
+
+
+          &nbsp;     &nbsp;     &nbsp; 
+          
+
+          <li class="nav-item">
+
+            <a class="btn btn-outline-primary navbar-btn" type="button" href="{% url 'create-task' %}">Create Task</a>
+
+          </li>
+
+
+          &nbsp;     &nbsp;     &nbsp; 
+          
+          
+
+          <li class="nav-item">
+
+            <a class="btn btn-outline-primary navbar-btn" type="button" href="{% url 'read-task' %}">Read Task</a>
+
+          </li>
+          &nbsp;     &nbsp;     &nbsp; 
+          
+          
+
+          <li class="nav-item">
+
+            <a class="btn btn-primary navbar-btn" type="button" href="{% url 'user-logout' %}">Logout</a>
+
+          </li>
+
+
+        </ul>
+      
+        
+      </div>
+
+
+</nav>
