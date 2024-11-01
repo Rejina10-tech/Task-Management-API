@@ -1,0 +1,7 @@
+# Ensure Python files use LF line endings
+*.py text eol=lf
+
+# Define binary files to avoid line-ending modifications
+*.jpg binary
+*.png binary
+*.gif binary
