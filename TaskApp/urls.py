@@ -2,9 +2,14 @@
 from django.urls import path
 from .views import *
 from . import views
+from .views import TaskDetailView, TaskListView
+from .views import TaskListView
 
 
 urlpatterns = [
+    path('api/', views.api_root, name='api_root'),
+
+
     path('<int:pk>/', DetailTask.as_view()),
     # path('', ListTask.as_view()),
     
@@ -58,5 +63,7 @@ urlpatterns = [
     path('dashboard', views.dashboard, name="dashboard" ),
 
 
-
+    path('api/tasks/', views.TaskListView.as_view(), name='task_list_create'),
+    path('api/tasks/<int:pk>/', views.TaskDetailView.as_view(), name='task_detail'),
+    path('api/register/', views.CreateUserView.as_view(), name='user_register'),
 ]

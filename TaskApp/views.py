@@ -1,14 +1,20 @@
 from django.shortcuts import render,redirect
-from rest_framework import generics
+from rest_framework import generics,  permissions
 from .serializers import *
 from .serializers import TaskSerializer
 from django.contrib.auth.decorators import login_required
-
+from .serializers import TaskSerializer, UserSerializer
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from .models import Task
 from django.http import HttpResponse
 from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate,login
 from .forms  import Taskform,CreateUserForm,LoginForm,CreateTaskForm
+from django.http import Http404
+from .serializers import TaskSerializer
+
+
 
 
 class ListTask(generics.ListAPIView):
@@ -196,3 +202,62 @@ def dashboard(request):
     return render(request, 'profiles/dashboard.html')
 
 
+# Task API views
+class TaskListView(generics.ListCreateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        #filter tasks by logged user
+        return  Task.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        # Set the user as the logged-in user when creating a task
+        serializer.save(user=self.request.user)
+
+    
+
+class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        #ensure only tasks owned by user can be accesed
+        return  Task.objects.filter(user=self.request.user)
+
+
+# class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Task.objects.all()
+#     serializer_class = TaskSerializer
+
+#     def get_object(self, pk):
+#         try:
+#             return Task.objects.get(pk=pk)
+#         except Task.DoesNotExist:
+#             raise Http404
+    
+
+
+# User registration API view
+class CreateUserView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]
+
+
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'tasks': '/api/tasks/',
+        'register': '/api/register/',
+    })
+
+# API Root View
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'tasks': request.build_absolute_uri('/api/tasks/'),
+        'register': request.build_absolute_uri('/api/register/'),
+    })
