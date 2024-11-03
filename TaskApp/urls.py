@@ -1,10 +1,8 @@
 
-from django.urls import path
+from django.urls import path,include
 from .views import *
 from . import views
 from .views import TaskDetailView, TaskListView
-from .views import TaskListView
-
 
 urlpatterns = [
     path('api/', views.api_root, name='api_root'),
@@ -49,7 +47,7 @@ urlpatterns = [
     
     path("register", views.register, name="register" ),
     
-    
+
     
   # login a user
     path('my-login', views.my_login, name="my-login" ),

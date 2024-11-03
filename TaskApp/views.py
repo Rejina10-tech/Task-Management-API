@@ -13,8 +13,15 @@ from django.contrib.auth import authenticate,login
 from .forms  import Taskform,CreateUserForm,LoginForm,CreateTaskForm
 from django.http import Http404
 from .serializers import TaskSerializer
+from rest_framework import viewsets
+from .serializers import TaskSerializer 
+from rest_framework.permissions import AllowAny  # Allow unauthenticated access
 
 
+class TaskViewSet(viewsets.ModelViewSet):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    permission_classes = [AllowAny]  
 
 
 class ListTask(generics.ListAPIView):
