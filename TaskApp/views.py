@@ -63,7 +63,7 @@ def register(request):
             
             form.save()
             
-            return redirect('login')
+            return redirect('dashboard')
         
     context = {'form':form}
     
@@ -247,12 +247,7 @@ class CreateUserView(generics.CreateAPIView):
     permission_classes = [permissions.AllowAny]
 
 
-@api_view(['GET'])
-def api_root(request, format=None):
-    return Response({
-        'tasks': '/api/tasks/',
-        'register': '/api/register/',
-    })
+
 
 # API Root View
 @api_view(['GET'])
