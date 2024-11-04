@@ -47,7 +47,7 @@ def ReadTask(request):
 
     context = {'task': task}
 
-    return render(request, 'read-task.html', context=context)
+    return render(request, 'view-task.html', context=context)
 
 def home(request):
     
@@ -126,7 +126,7 @@ def createTask(request):
          task.user = request.user
          form.save()
           
-        return redirect('read-task')
+        return redirect('view-task')
     
     context = {'form': form}
     
@@ -136,13 +136,13 @@ def createTask(request):
 # view all tasks page
 
 @login_required(login_url='my-login')
-def readTask(request):
+def viewTask(request):
     
     current_user = request.user.id 
     task = Task.objects.all().filter(user=current_user)
     
     context = {'task': task}
-    return render(request, 'profiles/read-task.html', context=context)
+    return render(request, 'profiles/view-task.html', context=context)
 
 # update all tasks page
 
@@ -161,7 +161,7 @@ def updateTask(request, pk):
          
            form.save()
           
-        return redirect('read-task')
+        return redirect('view-task')
     
 
     context = {'form': form}
@@ -182,7 +182,7 @@ def deleteTask(request, pk):
         
            task.delete()
           
-           return redirect('read-task')
+           return redirect('view-task')
     
 
     return render(request, 'profiles/delete-task.html')

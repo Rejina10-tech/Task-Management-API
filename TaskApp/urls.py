@@ -22,7 +22,7 @@ urlpatterns = [
     
     
     # read tasks
-    path('read-task', views.readTask, name="read-task"),
+    path('view-task', views.viewTask, name="view-task"),
     
     path('', views.home, name=""),
     
