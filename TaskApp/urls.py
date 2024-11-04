@@ -59,9 +59,14 @@ urlpatterns = [
     
     # dashboard
     path('dashboard', views.dashboard, name="dashboard" ),
+    path('api/tasks/', TaskListCreateView.as_view(), name='task-list-create'),
+    path('api/tasks/<int:pk>/', TaskRetrieveUpdateDestroyView.as_view(), name='task-detail'),
+    path('api/register/', register_user, name='register'),  # Registration endpoint
+    path('api/login/', api_login_user, name='api_login_user'),  # Login
 
 
-    path('api/tasks/', views.TaskListView.as_view(), name='task_list_create'),
-    path('api/tasks/<int:pk>/', views.TaskDetailView.as_view(), name='task_detail'),
-    path('api/register/', views.CreateUserView.as_view(), name='user_register'),
+    # path('api/tasks/', views.TaskListView.as_view(), name='task_list_create'),
+    # path('api/tasks/<int:pk>/', views.TaskDetailView.as_view(), name='task_detail'),
+    # path('api/register/', views.CreateUserView.as_view(), name='user_register'),
 ]
+

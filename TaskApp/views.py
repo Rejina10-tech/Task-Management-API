@@ -16,6 +16,14 @@ from .serializers import TaskSerializer
 from rest_framework import viewsets
 from .serializers import TaskSerializer 
 from rest_framework.permissions import AllowAny  # Allow unauthenticated access
+from rest_framework.decorators import api_view
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
+from .serializers import UserSerializer 
+from rest_framework import status
+from .forms import UserRegistrationForm
+
+
 
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -191,7 +199,6 @@ def deleteTask(request, pk):
    
    
    
-   
     
 # logout a user
 
@@ -262,4 +269,66 @@ def api_root(request, format=None):
     return Response({
         'tasks': request.build_absolute_uri('/api/tasks/'),
         'register': request.build_absolute_uri('/api/register/'),
+        'login': request.build_absolute_uri('/api/login/'),
+
     })
+
+
+# View to list all tasks or create a new task
+class TaskListCreateView(generics.ListCreateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+
+# View to retrieve, update, or delete a specific task
+class TaskRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+
+# @api_view(['POST'])
+# def register_user(request):
+#     if request.method == 'POST':
+#         serializer = UserSerializer(data=request.data)
+#         if serializer.is_valid():
+#             # Hash the password before saving
+#             serializer.validated_data['password'] = make_password(serializer.validated_data['password'])
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def register_user(request):
+    print("Received request data:", request.data)  # Debugging output
+    serializer = UserSerializer(data=request.data)
+    if serializer.is_valid():
+        user = serializer.save()  # Save the user instance
+        response_data = {
+            'username': user.username,
+            'email': user.email,
+            # Add other fields you want to expose here if necessary
+        }
+        print("User registered successfully:", response_data)  # Debugging output
+        return Response(response_data, status=status.HTTP_201_CREATED)
+    else:
+        print("Validation errors:", serializer.errors)  # Debugging output
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['POST'])
+def api_register_user(request):
+    form = UserRegistrationForm(data=request.data)
+    if form.is_valid():
+        user = form.save()
+        login(request, user)  # Optionally log in the user
+        return Response({"message": "User registered successfully!"}, status=201)
+    return Response(form.errors, status=400)
+
+
+@api_view(['POST'])
+def api_login_user(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        user = authenticate(username=serializer.validated_data['username'], password=serializer.validated_data['password'])
+        if user is not None:
+            login(request, user)  # Log the user in (optional)
+            return Response({"message": "User logged in successfully!"}, status=status.HTTP_200_OK)
+        return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

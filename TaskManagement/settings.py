@@ -46,8 +46,10 @@ INSTALLED_APPS = [
 ]
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',  # Allow all users to access
-    ]
+        'rest_framework.permissions.AllowAny', 
+     ], # Allow all users to access
+   
+    
 }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
