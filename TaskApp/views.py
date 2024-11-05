@@ -22,6 +22,7 @@ from django.contrib.auth.hashers import make_password
 from .serializers import UserSerializer 
 from rest_framework import status
 from .forms import UserRegistrationForm
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 
@@ -29,7 +30,9 @@ from .forms import UserRegistrationForm
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-    permission_classes = [AllowAny]  
+    permission_classes = [AllowAny] 
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['status', 'priority', 'deadline']
 
 
 class ListTask(generics.ListAPIView):

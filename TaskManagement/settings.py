@@ -43,11 +43,13 @@ INSTALLED_APPS = [
     'rest_framework',
     'crispy_forms',
     'crispy_bootstrap4',
+    'django_filters',
 ]
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny', 
      ], # Allow all users to access
+     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
    
     
 }
@@ -94,8 +96,8 @@ DATABASES = {
         'NAME': 'Task_Management',
         'USER': 'postgres',
         'PASSWORD': '12345',
-        'HOST': 'localhost',  # Set to '127.0.0.1' or your server IP if remote
-        'PORT': '5432',  # Default PostgreSQL port
+        'HOST': 'localhost', 
+        'PORT': '5432', 
     }
 }
 
