@@ -40,6 +40,11 @@ Install Dependencies
   
   PostgreSQL 
 ```
+Install Requirements
+```bash
+  pip install -r requirements.txt
+```
+
 Configure the Database
 ```bash
    DATABASES = {

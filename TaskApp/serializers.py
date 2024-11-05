@@ -61,9 +61,9 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError('Must include "username" and "password".')
         return attrs
     
-# class UserLoginSerializer(serializers.Serializer):
-#     username = serializers.CharField()
-#     password = serializers.CharField()
+class UserLoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
     
 # class UserRegistrationSerializer(serializers.ModelSerializer):
 #     password = serializers.CharField(write_only=True)
