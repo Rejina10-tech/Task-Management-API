@@ -11,7 +11,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate,login
 from .forms  import Taskform,CreateUserForm,LoginForm,CreateTaskForm
-from django.http import Http404
+
 from .serializers import TaskSerializer
 from rest_framework import viewsets
 from .serializers import TaskSerializer 
@@ -19,21 +19,55 @@ from rest_framework.permissions import AllowAny  # Allow unauthenticated access
 from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
-from .serializers import UserSerializer 
+from .serializers import UserSerializer, LoginSerializer
 from rest_framework import status
 from .forms import UserRegistrationForm
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 
 
+class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
+    def get(self, request, *args, **kwargs):
+        task = self.get_object()
+        if task.user != request.user:
+            return Response({'detail': 'Not permitted to access this task.'}, status=status.HTTP_403_FORBIDDEN)
+        return super().get(request, *args, **kwargs)
+        
+class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        obj = super().get_object()
+        if obj.user != self.request.user:
+            raise PermissionDenied("You do not have permission to access this task.")
+        return obj
+
+
+class TaskList(generics.ListCreateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Task.objects.filter(user=self.request.user)        
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-    permission_classes = [AllowAny] 
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['status', 'priority', 'deadline']
-
+    # permission_classes = [AllowAny] 
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        # Only return tasks that belong to the authenticated user
+        return Task.objects.filter(user=self.request.user)
+    
 
 class ListTask(generics.ListAPIView):
     queryset = Task.objects.all()
@@ -286,6 +320,21 @@ class TaskListCreateView(generics.ListCreateAPIView):
 class TaskRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+
+class LoginView(generics.GenericAPIView):
+    serializer_class = LoginSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        
+        # Optionally return a token or other user information
+        return Response({
+            "message": "Login successful",
+            "username": user.username,
+            "email": user.email,
+        }, status=status.HTTP_200_OK)
 
 # @api_view(['POST'])
 # def register_user(request):

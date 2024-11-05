@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import Task, User
+from django.contrib.auth import authenticate
+
 
 class TaskSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source="user.username")
@@ -41,9 +43,27 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
     
-class UserLoginSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    password = serializers.CharField()
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
+
+    def validate(self, attrs):
+        username = attrs.get('username')
+        password = attrs.get('password')
+
+        if username and password:
+            user = authenticate(username=username, password=password)
+            if user:
+                attrs['user'] = user
+            else:
+                raise serializers.ValidationError('Invalid username or password.')
+        else:
+            raise serializers.ValidationError('Must include "username" and "password".')
+        return attrs
+    
+# class UserLoginSerializer(serializers.Serializer):
+#     username = serializers.CharField()
+#     password = serializers.CharField()
     
 # class UserRegistrationSerializer(serializers.ModelSerializer):
 #     password = serializers.CharField(write_only=True)

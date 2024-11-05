@@ -29,7 +29,7 @@ class LoginForm(AuthenticationForm):
 class CreateTaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields= ['Title', 'Description','Date', 'Completed']
+        fields= ['Title', 'Description','Date','Completed']
         exclude= ['user',]
 
 class UserRegistrationForm(forms.ModelForm):

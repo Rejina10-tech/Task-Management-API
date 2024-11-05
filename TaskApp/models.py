@@ -9,7 +9,8 @@ class Task(models.Model):
     Completed = models.BooleanField(default=False)
   
     user = models.ForeignKey(User, max_length=10, on_delete=models.CASCADE, null = True)
-  
+    
+
   
     
 def __str__(self):
