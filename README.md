@@ -1,17 +1,17 @@
-#Task Management API
+# Task Management API
 This is a RESTful API for a Task Management system, built using Django and Django REST Framework (DRF). 
 The API allows users to create, update, delete, and retrieve tasks, along with managing task status, deadlines, and priorities.
 
-#Features
+# Features
 CRUD Operations: Create, read, update, and delete tasks.
 User Authentication: Manage user authentication and authorization for secure access.
 
-#Prerequisites
+# Prerequisites
 Python 
 PostgreSQL 
 Django and Django REST Framework
 
-#Installation
+# Installation
 
 1.Clone the Repository
   git clone https://github.com/Rejina10-tech/Portfolio-Website.git
@@ -43,14 +43,14 @@ Django and Django REST Framework
 6.Start the Server
   python manage.py runserver
 
-#API Endpoints
+# API Endpoints
   /api/tasks/	: Create a new task
   /api/tasks/	: Retrieve all tasks
   /api/tasks/{id}/	: Retrieve a specific task
   /api/tasks/{id}/	: Update a specific task
   /api/tasks/{id}/	: Delete a specific task
 
-#Technologies Used
+# Technologies Used
   Django - High-level Python web framework.
   Django REST Framework - Toolkit for building Web APIs.
   PostgreSQL - Relational database for storing tasks and user data.
