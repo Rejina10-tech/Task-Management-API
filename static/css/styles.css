@@ -15,3 +15,35 @@ h2{
 .message-text{
     color :aliceblue;
 }
+
+/* Style for checkbox wrapper */
+.checkbox-container {
+    display: inline-block;
+    padding: 5px;
+    border: 2px solid #007bff; /* Blue border */
+    border-radius: 2px;
+    background-color: #f0f0f0; /* Light background for visibility */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
+}
+
+/* Style the checkbox input */
+.checkbox-container input[type="checkbox"] {
+    accent-color: #007bff; /* Ensures the checkbox tick color is blue */
+    width: 20px;           /* Increase checkbox size */
+    height: 20px;
+}
+
+/* To ensure visibility on focus */
+.checkbox-container input[type="checkbox"]:focus {
+    outline: 2px solid #0056b3; /* Darker blue outline on focus */
+}
+
+.checkbox-container {
+    border: 2px solid #007bff !important;
+    background-color: #f0f0f0 !important;
+    padding: 5px !important;
+    border-radius: 4px !important;
+}
+
+
+

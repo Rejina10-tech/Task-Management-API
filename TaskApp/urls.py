@@ -11,13 +11,10 @@ router.register(r'tasks', TaskViewSet, basename='task')
 
 urlpatterns = [
     path('api/', views.api_root, name='api_root'),
-    path('api/tasks/', TaskList.as_view(), name='task-list-create'),
-    path('api/tasks/<int:pk>/', TaskDetail.as_view(), name='task-detail'),
-    path('tasks/', TaskCreateView.as_view(), name='task-create'),
-    path('<int:pk>/', DetailTask.as_view()),
-    # path('', ListTask.as_view()),
-
-    
+    # path('api/tasks/', TaskList.as_view(), name='task-list-create'),
+    # path('api/tasks/<int:pk>/', TaskDetail.as_view(), name='task-detail'),
+    # path('tasks/', TaskCreateView.as_view(), name='task-create'),
+    # path('<int:pk>/', DetailTask.as_view()),
     path('', views.home, name=""),
     
     
@@ -52,18 +49,19 @@ urlpatterns = [
     path("register", views.register, name="register" ),
     
 
+
+
     # profile management
     
     path("profile-management", views.profile_management, name="profile-management" ),
-    # path('profile-management/', views.profile_management.as_view(), name='profile-management'),
    
 
-  #  delete account
+   #  delete account
     path("delete-account", views.deleteAccount, name="delete-account" ),
 
 
     
-  # login a user
+    # login a user
     path('my-login', views.my_login, name="my-login" ),
 
     #logout a user
@@ -73,19 +71,20 @@ urlpatterns = [
     
     # dashboard
     path('dashboard', views.dashboard, name="dashboard" ),
+
+
+
     path('api/tasks/', TaskListCreateView.as_view(), name='task-list-create'),
     
-    # path('api/login/', api_login_user, name='api_login_user'),  # Login
 
+    path('api/tasks/<int:id>/update/', TaskUpdateView.as_view(), name='task-update'),
 
     # path('api/tasks/', views.TaskListView.as_view(), name='task_list_create'),
-    path('api/tasks/<int:pk>/', views.TaskDetailView.as_view(), name='task_detail'),
+    # path('api/tasks/<int:pk>/', views.TaskDetailView.as_view(), name='task_detail'),
     path('api/register/', views.CreateUserView.as_view(), name='user_register'),
     path('api/login/', views.LoginView.as_view(), name='user_login'),
-
     path('api/login/', LoginView.as_view(), name='user_login'),
-
-    path('tasks/', TaskViewSet.as_view({'get': 'list', 'post': 'create'}), name='task-list'),
-    path('tasks/<int:pk>/', TaskViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='task-detail'),
+    # path('tasks/', TaskViewSet.as_view({'get': 'list', 'post': 'create'}), name='task-list'),
+    path('api/tasks/<int:pk>/', views.TaskViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='task-detail'),
 ]
 

@@ -28,6 +28,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from django.contrib import messages
+from rest_framework.generics import UpdateAPIView
 
 
 class TaskCreateView(generics.CreateAPIView):
@@ -57,6 +58,10 @@ class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
             raise PermissionDenied("You do not have permission to access this task.")
         return obj
 
+class TaskUpdateView(UpdateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    lookup_field = 'id'  # Use 'id' to look up the task in the URL
 
 class TaskList(generics.ListCreateAPIView):
     queryset = Task.objects.all()
@@ -75,6 +80,19 @@ class TaskViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         # Only return tasks that belong to the authenticated user
         return Task.objects.filter(user=self.request.user)
+    
+    
+    def update(self, request, *args, **kwargs):
+        # Handle partial updates by setting partial=True in serializer
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+
+        # Ensure the serializer is valid before saving
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(serializer.data)
     
 
 class ListTask(generics.ListAPIView):

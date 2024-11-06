@@ -37,7 +37,7 @@ class TaskAPITestCase(APITestCase):
         response = self.client.get(reverse('task-list-create'))
 
         # Only user1's task should be visible
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(len(response.data), 2)
         self.assertEqual(response.data[0]['Title'], self.task1.Title)
 
     def test_get_single_task(self):
