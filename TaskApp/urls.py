@@ -5,9 +5,7 @@ from . import views
 from .views import TaskDetailView,TaskListCreateView
 from .views import TaskViewSet, LoginView
 from rest_framework.routers import DefaultRouter
-from .views import TaskList,TaskDetail # Assuming you have a TaskDetail view
-
-
+from .views import TaskList,TaskDetail
 router = DefaultRouter()
 router.register(r'tasks', TaskViewSet, basename='task')
 
@@ -53,6 +51,16 @@ urlpatterns = [
     
     path("register", views.register, name="register" ),
     
+
+    # profile management
+    
+    path("profile-management", views.profile_management, name="profile-management" ),
+    # path('profile-management/', views.profile_management.as_view(), name='profile-management'),
+   
+
+  #  delete account
+    path("delete-account", views.deleteAccount, name="delete-account" ),
+
 
     
   # login a user

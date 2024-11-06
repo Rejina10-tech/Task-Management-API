@@ -12,4 +12,6 @@ h2{
     border-radius: 10px;
     width: 500px;
 }
-
+.message-text{
+    color :aliceblue;
+}

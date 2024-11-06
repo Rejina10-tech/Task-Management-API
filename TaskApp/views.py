@@ -11,6 +11,8 @@ from django.http import HttpResponse
 from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate,login
 from .forms  import Taskform,CreateUserForm,LoginForm,CreateTaskForm
+from .forms  import UpdateUserForm,Taskform, LoginForm, CreateUserForm
+from django.contrib.messages import constants as message_constants
 
 from .serializers import TaskSerializer
 from rest_framework import viewsets
@@ -25,6 +27,8 @@ from .forms import UserRegistrationForm
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
+from django.contrib import messages
+
 
 class TaskCreateView(generics.CreateAPIView):
     queryset = Task.objects.all()
@@ -118,8 +122,10 @@ def register(request):
         if form.is_valid():
             
             form.save()
+
+            messages.success(request, "User registration was successful !!" )
             
-            return redirect('dashboard')
+            return redirect('my-login')
         
     context = {'form':form}
     
@@ -255,6 +261,42 @@ def user_logout(request):
 def dashboard(request):
     
     return render(request, 'profiles/dashboard.html')
+
+
+@login_required(login_url='my-login')
+def profile_management(request):
+    if request.method == 'POST':
+
+      user_form = UpdateUserForm(request.POST, instance= request.user)
+
+      if user_form.is_valid():
+          
+          user_form.save()
+
+          return redirect ('dashboard')
+
+    user_form = UpdateUserForm(instance=request.user)
+    context = {'user_form': user_form}
+
+    return render(request, 'profiles/profile-management.html', context=context)
+
+
+@login_required(login_url='my-login')
+def deleteAccount(request):
+    if request.method == 'POST':
+        deleteUser = User.objects.get(username=request.user)
+
+        deleteUser.delete()
+
+        return redirect('')
+    
+    return render(request, 'profiles/delete-account.html')
+
+# Import django messages(notifications)
+from django.contrib import messages
+
+
+
 
 
 # Task API views

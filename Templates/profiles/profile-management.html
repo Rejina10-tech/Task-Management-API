@@ -1,0 +1,67 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<html>
+    <head>
+
+        <meta charset="utf-8" />
+
+        <meta name="viewport" content="width-device-width, initial-scale=1, maximum-scale=1"/>
+
+        <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/solar/bootstrap.min.css">
+
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+        <title> Task Management API | Profile Management</title>
+
+    </head>
+
+    {% include 'profiles/base.html' %}
+
+    <br>
+    <h3 class= "text-center"> Update your profile</h3>
+    <br>
+    <div class="container bg-white shadow-md p-5 form-layout "  style="margin-top:20px;">
+
+
+    <form method = "POST" autocomplete= "off">
+
+
+    {% csrf_token %}
+
+    {{ user_form.username|as_crispy_field}}
+
+    <br> <br>
+
+
+    {{ user_form.email|as_crispy_field}}
+
+
+    <br> <br>
+    <input class="btn btn-primary navbar-btn" type="submit" value="Update Profile" />
+
+
+    </form>
+   </div>
+
+   <br>
+
+   <div class="container bg-white shadow-md p-5 form-layout "  style="margin-top:20px;">
+    <h3 >Delete Account</h3>
+
+    <hr>
+     <div>
+
+      <a class="btn btn-primary navbar-btn" type="button" href="{% url 'delete-account' %}">Delete Account</a>
+
+     </div>
+   </div>
+
+
+
+
+</html>

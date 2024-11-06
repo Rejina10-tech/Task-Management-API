@@ -1,7 +1,6 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-
 <html>
     <head>
 
@@ -13,27 +12,41 @@
 
         <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 
-        <title> Task Management API | Dashboard </title>
+        <title> Task Management API | Delete User</title>
 
     </head>
 
-    {% include 'profiles/base.html' %}
-    <br> <br>
 
+    {% include 'profiles/base.html' %}
+
+    <br>
+    <br>
     <div class="container bg-white shadow-md p-5 form-layout" >
 
-
-    <h2> Task Management </h2>
-
-
-        <hr>
-        <p> Welcome to Task Management App</p>
-
-        <br>
-
-        <a href="{% url 'profile-management'  %}">profile Management </a>
-
-    </div>
+    <h3>Delete Account</h3>
 
 
+    <hr>
+
+
+    <br>
+
+    <form method = "POST" autocomplete= "off">
+
+
+    {% csrf_token %}
+
+    <p> Are you sure you want to delete this account ? </p>
+    <br>
+
+
+
+    <input class="btn btn-primary navbar-btn" type="submit" value="Delete  User" />
+    <br><br>
+
+    <a href="{% url 'dashboard '  %}">Go Back </a>
+
+
+    </form>
+   </div>
 </html>
