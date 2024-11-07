@@ -29,6 +29,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from django.contrib import messages
 from rest_framework.generics import UpdateAPIView
+from django.contrib import messages
+
 
 
 class TaskCreateView(generics.CreateAPIView):
@@ -74,21 +76,16 @@ class TaskList(generics.ListCreateAPIView):
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-    # permission_classes = [AllowAny] 
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
-        # Only return tasks that belong to the authenticated user
         return Task.objects.filter(user=self.request.user)
     
     
     def update(self, request, *args, **kwargs):
-        # Handle partial updates by setting partial=True in serializer
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
-
-        # Ensure the serializer is valid before saving
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 
@@ -121,11 +118,6 @@ def ReadTask(request):
     return render(request, 'view-task.html', context=context)
 
 def home(request):
-    
-    # queryAllData = Task.objects.all()
-    # querySingleObject = Task.objects.get(id=5)
-    
-    # context = {'tasks': queryAllData}
     return render(request, 'index.html')
 
 
@@ -174,13 +166,6 @@ def my_login(request):
     
     return render(request, 'my-login.html', context=context)
     
-    
-                
-    
-    
-    
-    
-    # return render(request, "my-login.html")
     
     
 # create  a task page
@@ -310,8 +295,7 @@ def deleteAccount(request):
     
     return render(request, 'profiles/delete-account.html')
 
-# Import django messages(notifications)
-from django.contrib import messages
+
 
 
 
@@ -341,18 +325,6 @@ class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         #ensure only tasks owned by user can be accesed
         return  Task.objects.filter(user=self.request.user)
-
-
-# class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Task.objects.all()
-#     serializer_class = TaskSerializer
-
-#     def get_object(self, pk):
-#         try:
-#             return Task.objects.get(pk=pk)
-#         except Task.DoesNotExist:
-#             raise Http404
-    
 
 
 # User registration API view
@@ -400,16 +372,7 @@ class LoginView(generics.GenericAPIView):
             "email": user.email,
         }, status=status.HTTP_200_OK)
 
-# @api_view(['POST'])
-# def register_user(request):
-#     if request.method == 'POST':
-#         serializer = UserSerializer(data=request.data)
-#         if serializer.is_valid():
-#             # Hash the password before saving
-#             serializer.validated_data['password'] = make_password(serializer.validated_data['password'])
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 def register_user(request):
@@ -428,23 +391,4 @@ def register_user(request):
         print("Validation errors:", serializer.errors)  # Debugging output
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-@api_view(['POST'])
-def api_register_user(request):
-    form = UserRegistrationForm(data=request.data)
-    if form.is_valid():
-        user = form.save()
-        login(request, user)  # Optionally log in the user
-        return Response({"message": "User registered successfully!"}, status=201)
-    return Response(form.errors, status=400)
 
-
-@api_view(['POST'])
-def api_login_user(request):
-    serializer = UserLoginSerializer(data=request.data)
-    if serializer.is_valid():
-        user = authenticate(username=serializer.validated_data['username'], password=serializer.validated_data['password'])
-        if user is not None:
-            login(request, user)  # Log the user in (optional)
-            return Response({"message": "User logged in successfully!"}, status=status.HTTP_200_OK)
-        return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
