@@ -29,7 +29,11 @@ Clone the Repository
 Set Up a Virtual Environment
 
 ```bash
-source taskenv/bin/activate 
+source taskenv/Scripts/activate 
+```
+        or
+```bash
+source newenv/Scripts/activate 
 ```
 
 Install Dependencies
