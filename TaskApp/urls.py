@@ -11,10 +11,6 @@ router.register(r'tasks', TaskViewSet, basename='task')
 
 urlpatterns = [
     path('api/', views.api_root, name='api_root'),
-    # path('api/tasks/', TaskList.as_view(), name='task-list-create'),
-    # path('api/tasks/<int:pk>/', TaskDetail.as_view(), name='task-detail'),
-    # path('tasks/', TaskCreateView.as_view(), name='task-create'),
-    # path('<int:pk>/', DetailTask.as_view()),
     path('', views.home, name=""),
     
     
@@ -79,8 +75,6 @@ urlpatterns = [
 
     path('api/tasks/<int:id>/update/', TaskUpdateView.as_view(), name='task-update'),
 
-    # path('api/tasks/', views.TaskListView.as_view(), name='task_list_create'),
-    # path('api/tasks/<int:pk>/', views.TaskDetailView.as_view(), name='task_detail'),
     path('api/register/', views.CreateUserView.as_view(), name='user_register'),
     path('api/login/', views.LoginView.as_view(), name='user_login'),
     path('api/login/', LoginView.as_view(), name='user_login'),

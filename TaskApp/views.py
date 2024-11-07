@@ -376,19 +376,19 @@ class LoginView(generics.GenericAPIView):
 
 @api_view(['POST'])
 def register_user(request):
-    print("Received request data:", request.data)  # Debugging output
+    print("Received request data:", request.data)  
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
         user = serializer.save()  # Save the user instance
         response_data = {
             'username': user.username,
             'email': user.email,
-            # Add other fields you want to expose here if necessary
+           
         }
-        print("User registered successfully:", response_data)  # Debugging output
+        print("User registered successfully:", response_data)   
         return Response(response_data, status=status.HTTP_201_CREATED)
     else:
-        print("Validation errors:", serializer.errors)  # Debugging output
+        print("Validation errors:", serializer.errors)  
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 

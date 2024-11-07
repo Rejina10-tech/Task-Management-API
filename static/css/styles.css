@@ -20,23 +20,19 @@ h2{
 .checkbox-container {
     display: inline-block;
     padding: 5px;
-    border: 2px solid #007bff; /* Blue border */
+    border: 2px solid #007bff; 
     border-radius: 2px;
-    background-color: #f0f0f0; /* Light background for visibility */
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
+    background-color: #f0f0f0; 
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); 
 }
 
 /* Style the checkbox input */
 .checkbox-container input[type="checkbox"] {
-    accent-color: #007bff; /* Ensures the checkbox tick color is blue */
-    width: 20px;           /* Increase checkbox size */
+    accent-color: #007bff; 
+    width: 20px;           
     height: 20px;
 }
 
-/* To ensure visibility on focus */
-.checkbox-container input[type="checkbox"]:focus {
-    outline: 2px solid #0056b3; /* Darker blue outline on focus */
-}
 
 .checkbox-container {
     border: 2px solid #007bff !important;
